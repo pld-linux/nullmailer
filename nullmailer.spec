@@ -10,25 +10,25 @@ Source0:	http://em.ca/~bruceg/nullmailer/%{name}-%{version}.tar.gz
 Patch0:		%{name}-time.patch
 URL:		http://em.ca/~bruceg/nullmailer/
 Prereq:		rc-scripts
-Requires(pre):  /usr/sbin/useradd
-Requires(pre):  /usr/sbin/groupadd
-Requires(pre):  /usr/bin/getgid
-Requires(pre):  /bin/id
-Requires(post,preun):/sbin/chkconfig
-Requires(postun):       /usr/sbin/userdel
-Requires(postun):       /usr/sbin/groupdel
-Provides:       smtpdaemon
-Obsoletes:      smtpdaemon
-Obsoletes:      exim
-Obsoletes:      masqmail
-Obsoletes:      omta
+Requires(pre):	/usr/sbin/useradd
+Requires(pre):	/usr/sbin/groupadd
+Requires(pre):	/usr/bin/getgid
+Requires(pre):	/bin/id
+Requires(post,preun):	/sbin/chkconfig
+Requires(postun):	/usr/sbin/userdel
+Requires(postun):	/usr/sbin/groupdel
+Provides:	smtpdaemon
+Obsoletes:	smtpdaemon
+Obsoletes:	exim
+Obsoletes:	masqmail
+Obsoletes:	omta
 Obsoletes:	postfix
-Obsoletes:      qmail
-Obsoletes:      sendmail
-Obsoletes:      sendmail-cf
-Obsoletes:      sendmail-doc
-Obsoletes:      smail
-Obsoletes:      zmailer
+Obsoletes:	qmail
+Obsoletes:	sendmail
+Obsoletes:	sendmail-cf
+Obsoletes:	sendmail-doc
+Obsoletes:	smail
+Obsoletes:	zmailer
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
