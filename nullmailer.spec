@@ -20,6 +20,7 @@ Requires(postun):	/usr/sbin/groupdel
 Requires(postun):	/usr/sbin/userdel
 Provides:	smtpdaemon
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+Obsoletes:	courier
 Obsoletes:	exim
 Obsoletes:	masqmail
 Obsoletes:	omta
