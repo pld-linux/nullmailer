@@ -121,5 +121,5 @@ fi
 %attr(4755,nullmail,nullmail) %{_sbindir}/nullmailer-queue
 %attr(755,root,root) %{_sbindir}/nullmailer-send
 %attr(755,root,root) %{_sbindir}/sendmail
-%dir /var/log/nullmailer
-/var/nullmailer
+/var/log/nullmailer
+%attr(740,nullmail,root) /var/nullmailer
