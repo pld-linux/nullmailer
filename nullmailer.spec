@@ -9,17 +9,17 @@ Group:		Networking/Daemons
 Source0:	http://untroubled.org/nullmailer/%{name}-%{version}.tar.gz
 # Source0-md5:	4a0bbe04ca8cf53987b7b1c27087aefe
 Patch0:		%{name}-time.patch
-URL:		http://em.ca/~bruceg/nullmailer/
+URL:		http://untroubled.org/nullmailer/
 Prereq:		rc-scripts
-Requires(pre):	/usr/sbin/useradd
-Requires(pre):	/usr/sbin/groupadd
-Requires(pre):	/usr/bin/getgid
 Requires(pre):	/bin/id
+Requires(pre):	/usr/bin/getgid
+Requires(pre):	/usr/sbin/groupadd
+Requires(pre):	/usr/sbin/useradd
 Requires(post,preun):	/sbin/chkconfig
-Requires(postun):	/usr/sbin/userdel
 Requires(postun):	/usr/sbin/groupdel
+Requires(postun):	/usr/sbin/userdel
 Provides:	smtpdaemon
-Obsoletes:	smtpdaemon
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	exim
 Obsoletes:	masqmail
 Obsoletes:	omta
@@ -29,8 +29,8 @@ Obsoletes:	sendmail
 Obsoletes:	sendmail-cf
 Obsoletes:	sendmail-doc
 Obsoletes:	smail
+Obsoletes:	smtpdaemon
 Obsoletes:	zmailer
-BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
 Nullmailer is a mail transport agent designed to only relay all its
@@ -56,7 +56,9 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/{usr/lib,etc/rc.d/init.d}
 install -d $RPM_BUILD_ROOT/var/{nullmailer/service/log,log/nullmailer}
 
-%{__make} DESTDIR=$RPM_BUILD_ROOT install
+%{__make} install \
+	DESTDIR=$RPM_BUILD_ROOT 
+
 ln -s ../sbin/sendmail $RPM_BUILD_ROOT%{_libdir}/sendmail
 install scripts/nullmailer.run $RPM_BUILD_ROOT/var/nullmailer/service/run
 install scripts/nullmailer-log.run $RPM_BUILD_ROOT/var/nullmailer/service/log/run
