@@ -31,6 +31,7 @@ Obsoletes:	sendmail-cf
 Obsoletes:	sendmail-doc
 Obsoletes:	smail
 Obsoletes:	smtpdaemon
+Obsoletes:	ssmtp
 Obsoletes:	zmailer
 
 %description
