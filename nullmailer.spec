@@ -57,7 +57,7 @@ install -d $RPM_BUILD_ROOT/{usr/lib,etc/rc.d/init.d}
 install -d $RPM_BUILD_ROOT/var/{nullmailer/service/log,log/nullmailer}
 
 %{__make} install \
-	DESTDIR=$RPM_BUILD_ROOT 
+	DESTDIR=$RPM_BUILD_ROOT
 
 ln -s ../sbin/sendmail $RPM_BUILD_ROOT%{_libdir}/sendmail
 install scripts/nullmailer.run $RPM_BUILD_ROOT/var/nullmailer/service/run
