@@ -4,7 +4,7 @@ Version:	1.00RC5
 Release:	0.1
 License:	GPL
 Group:		Networking/Daemons
-Source0:	http://em.ca/~bruceg/nullmailer/archive/%{version}/%{name}-%{version}.tar.gz
+Source0:	http://em.ca/~bruceg/nullmailer/%{name}-%{version}.tar.gz
 Patch0:		%{name}-time.patch
 URL:		http://em.ca/~bruceg/nullmailer/
 Prereq:		rc-scripts
