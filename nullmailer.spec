@@ -1,5 +1,7 @@
-Name:		nullmailer
+# TODO: FHS compliance (/var/nullmailer -> /var/lib/nullmailer)
 Summary:	Simple relay-only mail transport agent
+Summary(pl):	Prosty, wy³±cznie przekazuj±cy MTA
+Name:		nullmailer
 Version:	1.00RC5
 Release:	0.1
 License:	GPL
@@ -8,6 +10,13 @@ Source0:	http://em.ca/~bruceg/nullmailer/%{name}-%{version}.tar.gz
 Patch0:		%{name}-time.patch
 URL:		http://em.ca/~bruceg/nullmailer/
 Prereq:		rc-scripts
+Requires(pre):  /usr/sbin/useradd
+Requires(pre):  /usr/sbin/groupadd
+Requires(pre):  /usr/bin/getgid
+Requires(pre):  /bin/id
+Requires(post,preun):/sbin/chkconfig
+Requires(postun):       /usr/sbin/userdel
+Requires(postun):       /usr/sbin/groupdel
 Provides:       smtpdaemon
 Obsoletes:      smtpdaemon
 Obsoletes:      exim
@@ -20,19 +29,17 @@ Obsoletes:      sendmail-cf
 Obsoletes:      sendmail-doc
 Obsoletes:      smail
 Obsoletes:      zmailer
-Requires(pre):  /usr/sbin/useradd
-Requires(pre):  /usr/sbin/groupadd
-Requires(pre):  /usr/bin/getgid
-Requires(pre):  /bin/id
-Requires(post,preun):/sbin/chkconfig
-Requires(postun):       /usr/sbin/userdel
-Requires(postun):       /usr/sbin/groupdel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
 Nullmailer is a mail transport agent designed to only relay all its
 messages through a fixed set of "upstream" hosts. It is also designed
 to be secure.
+
+%description -l pl
+Nullmailer to MTA przeznaczony tylko do przekazywania wszystkich
+wiadomo¶ci do ustalonej listy "nadrzêdnych" serwerów. Zosta³
+zaprojektowany tak¿e z my¶l± o bezpieczeñstwie.
 
 %prep
 %setup -q
@@ -58,8 +65,8 @@ rm -rf $RPM_BUILD_ROOT
 
 %pre
 if [ -n "`/usr/bin/getgid nullmail`" ]; then
-	if [ "`getgid nullmailer`" != "62" ]; then
-		echo "Warning: group nullmail haven't gid=62. Correct this before installing nullmailer" 1>&2
+	if [ "`getgid nullmail`" != "62" ]; then
+		echo "Error: group nullmail doesn't have gid=62. Correct this before installing nullmailer." 1>&2
 		exit 1
         fi
 else
@@ -68,7 +75,7 @@ fi
 
 if [ -n "`/bin/id -u nullmail 2>/dev/null`" ]; then
 	if [ "`/bin/id -u nullmail`" != "62" ]; then
-		echo "Warning: user nullmail haven't uid=62. Correct this before installing nullmailer"
+		echo "Error: user nullmail doesn't have uid=62. Correct this before installing nullmailer."
 1>&2
 		exit 1
 	fi
@@ -94,7 +101,6 @@ fi
 
 %postun
 if [ "$1" = 0 ]; then
-	# post-erase instructions
 	/usr/sbin/userdel nullmail 2>/dev/null
 	/usr/sbin/groupdel nullmail 2>/dev/null
 fi
@@ -103,13 +109,13 @@ fi
 %defattr(644,root,root,755)
 %doc AUTHORS BUGS ChangeLog NEWS README TODO YEAR2000
 %dir %{_sysconfdir}/nullmailer
-%attr(04711,nullmail,nullmail) %{_bindir}/mailq
+%attr(4755,nullmail,nullmail) %{_bindir}/mailq
 %attr(755,root,root) %{_bindir}/nullmailer-inject
 %{_libdir}/sendmail
 %dir %{_libdir}/nullmailer
 %{_libdir}/nullmailer/*
 %{_mandir}/man?/*
-%attr(04711,nullmail,nullmail) %{_sbindir}/nullmailer-queue
+%attr(4755,nullmail,nullmail) %{_sbindir}/nullmailer-queue
 %attr(755,root,root) %{_sbindir}/nullmailer-send
 %attr(755,root,root) %{_sbindir}/sendmail
 %dir /var/log/nullmailer
