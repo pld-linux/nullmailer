@@ -71,7 +71,7 @@ if [ -n "`/usr/bin/getgid nullmail`" ]; then
 	if [ "`getgid nullmail`" != "62" ]; then
 		echo "Error: group nullmail doesn't have gid=62. Correct this before installing nullmailer." 1>&2
 		exit 1
-        fi
+	fi
 else
 	/usr/sbin/groupadd -g 62 -r -f nullmail
 fi
@@ -89,9 +89,9 @@ fi
 %post
 /sbin/chkconfig --add postfix
 if [ -f /var/lock/subsys/nullmailer ]; then
-        /etc/rc.d/init.d/nullmailer restart >&2
+	/etc/rc.d/init.d/nullmailer restart >&2
 else
-        echo "Run \"/etc/rc.d/init.d/nullmailer start\" to start nullmailer daemon." >&2
+	echo "Run \"/etc/rc.d/init.d/nullmailer start\" to start nullmailer daemon." >&2
 fi
 
 %preun
