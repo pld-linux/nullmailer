@@ -10,6 +10,7 @@ Source0:	http://untroubled.org/nullmailer/%{name}-%{version}.tar.gz
 # Source0-md5:	4a0bbe04ca8cf53987b7b1c27087aefe
 Patch0:		%{name}-time.patch
 URL:		http://untroubled.org/nullmailer/
+BuildRequires:	rpmbuild(macros) >= 1.159
 Prereq:		rc-scripts
 Requires(pre):	/bin/id
 Requires(pre):	/usr/bin/getgid
@@ -18,8 +19,9 @@ Requires(pre):	/usr/sbin/useradd
 Requires(post,preun):	/sbin/chkconfig
 Requires(postun):	/usr/sbin/groupdel
 Requires(postun):	/usr/sbin/userdel
+Provides:	group(nullmail)
 Provides:	smtpdaemon
-BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+Provides:	user(nullmail)
 Obsoletes:	courier
 Obsoletes:	exim
 Obsoletes:	masqmail
@@ -33,6 +35,7 @@ Obsoletes:	smail
 Obsoletes:	smtpdaemon
 Obsoletes:	ssmtp
 Obsoletes:	zmailer
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
 Nullmailer is a mail transport agent designed to only relay all its
@@ -70,12 +73,12 @@ rm -rf $RPM_BUILD_ROOT
 
 %pre
 if [ -n "`/usr/bin/getgid nullmail`" ]; then
-	if [ "`getgid nullmail`" != "62" ]; then
+	if [ "`/usr/bin/getgid nullmail`" != "62" ]; then
 		echo "Error: group nullmail doesn't have gid=62. Correct this before installing nullmailer." 1>&2
 		exit 1
 	fi
 else
-	/usr/sbin/groupadd -g 62 -r -f nullmail
+	/usr/sbin/groupadd -g 62 nullmail
 fi
 
 if [ -n "`/bin/id -u nullmail 2>/dev/null`" ]; then
@@ -85,7 +88,8 @@ if [ -n "`/bin/id -u nullmail 2>/dev/null`" ]; then
 		exit 1
 	fi
 else
-	/usr/sbin/useradd -u 62 -r -d /var/lock/svc/nullmailer -s /bin/false -c "NullMailer User" -g nullmail nullmail 1>&2
+	/usr/sbin/useradd -u 62 -d /var/lock/svc/nullmailer -s /bin/false \
+		-c "NullMailer User" -g nullmail nullmail 1>&2
 fi
 
 %post
@@ -106,8 +110,8 @@ fi
 
 %postun
 if [ "$1" = 0 ]; then
-	/usr/sbin/userdel nullmail 2>/dev/null
-	/usr/sbin/groupdel nullmail 2>/dev/null
+	%userremove nullmail
+	%groupremove nullmail
 fi
 
 %files
