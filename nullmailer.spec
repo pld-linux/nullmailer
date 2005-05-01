@@ -10,7 +10,7 @@ Source0:	http://untroubled.org/nullmailer/%{name}-%{version}.tar.gz
 # Source0-md5:	4a0bbe04ca8cf53987b7b1c27087aefe
 Patch0:		%{name}-time.patch
 URL:		http://untroubled.org/nullmailer/
-BuildRequires:	rpmbuild(macros) >= 1.159
+BuildRequires:	rpmbuild(macros) >= 1.202
 Prereq:		rc-scripts
 Requires(pre):	/bin/id
 Requires(pre):	/usr/bin/getgid
@@ -72,25 +72,8 @@ install scripts/nullmailer-log.run $RPM_BUILD_ROOT/var/nullmailer/service/log/ru
 rm -rf $RPM_BUILD_ROOT
 
 %pre
-if [ -n "`/usr/bin/getgid nullmail`" ]; then
-	if [ "`/usr/bin/getgid nullmail`" != "62" ]; then
-		echo "Error: group nullmail doesn't have gid=62. Correct this before installing nullmailer." 1>&2
-		exit 1
-	fi
-else
-	/usr/sbin/groupadd -g 62 nullmail
-fi
-
-if [ -n "`/bin/id -u nullmail 2>/dev/null`" ]; then
-	if [ "`/bin/id -u nullmail`" != "62" ]; then
-		echo "Error: user nullmail doesn't have uid=62. Correct this before installing nullmailer."
-1>&2
-		exit 1
-	fi
-else
-	/usr/sbin/useradd -u 62 -d /var/lock/svc/nullmailer -s /bin/false \
-		-c "NullMailer User" -g nullmail nullmail 1>&2
-fi
+%groupadd -g 62 nullmail
+%useradd -u 62 -d /var/lock/svc/nullmailer -s /bin/false -c "NullMailer User" -g nullmail nullmail
 
 %post
 /sbin/chkconfig --add postfix
