@@ -13,7 +13,7 @@ Patch0:		%{name}-FHS.patch
 URL:		http://untroubled.org/nullmailer/
 BuildRequires:	libstdc++-devel
 BuildRequires:	rpmbuild(macros) >= 1.202
-Prereq:		rc-scripts
+Requires:	rc-scripts
 Requires(pre):	/bin/id
 Requires(pre):	/usr/bin/getgid
 Requires(pre):	/usr/sbin/groupadd
