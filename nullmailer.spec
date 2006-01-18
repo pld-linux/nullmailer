@@ -65,7 +65,7 @@ zaprojektowany tak¿e z my¶l± o bezpieczeñstwie.
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/{usr/lib,etc/rc.d/init.d}
-install -d $RPM_BUILD_ROOT/var/{spool/nullmailer,log}
+install -d $RPM_BUILD_ROOT/var/{spool/nullmailer,log/nullmailer}
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
@@ -74,7 +74,7 @@ ln -s ../sbin/sendmail $RPM_BUILD_ROOT%{_libdir}/sendmail
 
 install %SOURCE1 $RPM_BUILD_ROOT/etc/rc.d/init.d/nullmailer
 
-:>$RPM_BUILD_ROOT/var/log/nullmailer
+:>$RPM_BUILD_ROOT/var/log/nullmailer/log
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -125,5 +125,6 @@ fi
 %attr(4755,nullmail,nullmail) %{_sbindir}/nullmailer-queue
 %attr(755,root,root) %{_sbindir}/nullmailer-send
 %attr(755,root,root) %{_sbindir}/sendmail
-%ghost /var/log/nullmailer
+%dir %attr(755,nullmail,root) /var/log/nullmailer
+%attr(640,nullmail,root) /var/log/nullmailer/log
 %attr(740,nullmail,root) /var/spool/nullmailer
