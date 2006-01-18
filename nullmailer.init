@@ -30,8 +30,8 @@ case "$1" in
 	# Check if the service is already running?
 	if [ ! -f /var/lock/subsys/nullmailer ]; then
 		msg_starting "nullmailer"
-                daemon --fork --user nullmail "nullmailer-send 2>&1 | dumblog -c /var/log/nullmailer/log"
-                touch /var/lock/subsys/nullmailer
+		daemon --fork --user nullmail "/sbin/initlog -f mail -c nullmailer-send >/dev/null 2>/dev/null"
+		touch /var/lock/subsys/nullmailer
 	else
 		msg_already_running "nullmailer"
 	fi
@@ -41,7 +41,7 @@ case "$1" in
 	if [ -f /var/lock/subsys/nullmailer ]; then
 		msg_stopping "nullmailer"
 		busy
-                killproc nullmailer-send
+		killproc nullmailer-send
 		rm -f /var/lock/subsys/nullmailer
 	else
 		msg_not_running "nullmailer"
@@ -53,8 +53,7 @@ case "$1" in
 	exit $?
 	;;
   status)
-	status nulmailer nullmailer-send
-	status nulmailer dumblog
+	status nullmailer nullmailer-send
 	exit $?
 	;;
   *)
