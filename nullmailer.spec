@@ -2,15 +2,14 @@
 Summary:	Simple relay-only mail transport agent
 Summary(pl):	Prosty, wy³±cznie przekazuj±cy MTA
 Name:		nullmailer
-Version:	1.00
+Version:	1.02
 Release:	0.1
 License:	GPL
 Group:		Networking/Daemons
 Source0:	http://untroubled.org/nullmailer/%{name}-%{version}.tar.gz
-# Source0-md5:	ead32b3543ef652891edf3856ec759dd
+# Source0-md5:	848d5c1f41a78e6897aeeb615e484d38
 Source1:	%{name}.init
-Patch0:		%{name}-time.patch
-Patch1:		%{name}-FHS.patch
+Patch0:		%{name}-FHS.patch
 URL:		http://untroubled.org/nullmailer/
 BuildRequires:	libstdc++-devel
 BuildRequires:	rpmbuild(macros) >= 1.202
@@ -53,8 +52,7 @@ zaprojektowany tak¿e z my¶l± o bezpieczeñstwie.
 
 %prep
 %setup -q
-%patch0 -p0
-%patch1 -p1
+%patch0 -p1
 
 %build
 %{__aclocal}
@@ -81,10 +79,16 @@ rm -rf $RPM_BUILD_ROOT
 
 %pre
 %groupadd -g 62 nullmail
-%useradd -u 62 -d /var/lock/svc/nullmailer -s /bin/false -c "NullMailer User" -g nullmail nullmail
+%useradd -u 62 -d /var/spool/nullmailer -s /bin/false -c "NullMailer User" -g nullmail nullmail
 
 %post
-/sbin/chkconfig --add postfix
+if ! [ -s /etc/nullmailer/me ]; then
+	/bin/hostname --fqdn >/etc/nullmailer/me
+fi
+if ! [ -s /etc/nullmailer/defaultdomain ]; then
+	/bin/hostname --domain >/etc/nullmailer/defaultdomain
+fi
+/sbin/chkconfig --add nullmailer
 if [ -f /var/lock/subsys/nullmailer ]; then
 	/etc/rc.d/init.d/nullmailer restart >&2
 else
