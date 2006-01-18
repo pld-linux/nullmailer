@@ -8,11 +8,14 @@ License:	GPL
 Group:		Networking/Daemons
 Source0:	http://untroubled.org/nullmailer/%{name}-%{version}.tar.gz
 # Source0-md5:	ead32b3543ef652891edf3856ec759dd
+Source1:	%{name}.init
 Patch0:		%{name}-time.patch
+Patch1:		%{name}-FHS.patch
 URL:		http://untroubled.org/nullmailer/
 BuildRequires:	libstdc++-devel
 BuildRequires:	rpmbuild(macros) >= 1.202
 Prereq:		rc-scripts
+Requires:	freedt
 Requires(pre):	/bin/id
 Requires(pre):	/usr/bin/getgid
 Requires(pre):	/usr/sbin/groupadd
@@ -50,24 +53,28 @@ zaprojektowany tak¿e z my¶l± o bezpieczeñstwie.
 
 %prep
 %setup -q
-%patch0
+%patch0 -p0
+%patch1 -p1
 
 %build
-%configure2_13
+%{__aclocal}
+%{__autoconf}
+%{__automake}
+%configure
 
 %{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/{usr/lib,etc/rc.d/init.d}
-install -d $RPM_BUILD_ROOT/var/{nullmailer/service/log,log/nullmailer}
+install -d $RPM_BUILD_ROOT/var/{spool/nullmailer,log/nullmailer}
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
 ln -s ../sbin/sendmail $RPM_BUILD_ROOT%{_libdir}/sendmail
-install scripts/nullmailer.run $RPM_BUILD_ROOT/var/nullmailer/service/run
-install scripts/nullmailer-log.run $RPM_BUILD_ROOT/var/nullmailer/service/log/run
+
+install %SOURCE1 $RPM_BUILD_ROOT/etc/rc.d/init.d/nullmailer
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -101,6 +108,7 @@ fi
 %files
 %defattr(644,root,root,755)
 %doc AUTHORS BUGS ChangeLog NEWS README TODO YEAR2000
+%attr(754,root,root) /etc/rc.d/init.d/nullmailer
 %dir %{_sysconfdir}/nullmailer
 %attr(4755,nullmail,nullmail) %{_bindir}/mailq
 %attr(755,root,root) %{_bindir}/nullmailer-inject
@@ -112,4 +120,4 @@ fi
 %attr(755,root,root) %{_sbindir}/nullmailer-send
 %attr(755,root,root) %{_sbindir}/sendmail
 /var/log/nullmailer
-%attr(740,nullmail,root) /var/nullmailer
+%attr(740,nullmail,root) /var/spool/nullmailer
