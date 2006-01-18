@@ -3,7 +3,7 @@ Summary:	Simple relay-only mail transport agent
 Summary(pl):	Prosty, wy³±cznie przekazuj±cy MTA
 Name:		nullmailer
 Version:	1.02
-Release:	0.2
+Release:	1
 License:	GPL
 Group:		Networking/Daemons
 Source0:	http://untroubled.org/nullmailer/%{name}-%{version}.tar.gz
@@ -71,6 +71,10 @@ install -d $RPM_BUILD_ROOT/etc/rc.d/init.d
 ln -s ../sbin/sendmail $RPM_BUILD_ROOT%{_libdir}/sendmail
 
 install %SOURCE1 $RPM_BUILD_ROOT/etc/rc.d/init.d/nullmailer
+:>$RPM_BUILD_ROOT%{_sysconfdir}/nullmailer/me
+:>$RPM_BUILD_ROOT%{_sysconfdir}/nullmailer/defaultdomain
+:>$RPM_BUILD_ROOT%{_sysconfdir}/nullmailer/remotes
+
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -80,11 +84,11 @@ rm -rf $RPM_BUILD_ROOT
 %useradd -u 62 -d /var/spool/nullmailer -s /bin/false -c "NullMailer User" -g nullmail nullmail
 
 %post
-if ! [ -s /etc/nullmailer/me ]; then
-	/bin/hostname --fqdn >/etc/nullmailer/me
+if [ ! -s %{_sysconfdir}/nullmailer/me ]; then
+	/bin/hostname --fqdn >%{_sysconfdir}/nullmailer/me
 fi
-if ! [ -s /etc/nullmailer/defaultdomain ]; then
-	/bin/hostname --domain >/etc/nullmailer/defaultdomain
+if [ ! -s %{_sysconfdir}/nullmailer/defaultdomain ]; then
+	/bin/hostname --domain >%{_sysconfdir}/nullmailer/defaultdomain
 fi
 /sbin/chkconfig --add nullmailer
 if [ -f /var/lock/subsys/nullmailer ]; then
@@ -112,6 +116,9 @@ fi
 %doc AUTHORS BUGS ChangeLog NEWS README TODO YEAR2000
 %attr(754,root,root) /etc/rc.d/init.d/nullmailer
 %dir %{_sysconfdir}/nullmailer
+%ghost %{_sysconfdir}/nullmailer/defaultdomain
+%ghost %{_sysconfdir}/nullmailer/me
+%ghost %{_sysconfdir}/nullmailer/remotes
 %attr(4755,nullmail,nullmail) %{_bindir}/mailq
 %attr(755,root,root) %{_bindir}/nullmailer-inject
 %{_libdir}/sendmail
