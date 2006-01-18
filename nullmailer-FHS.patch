@@ -1,0 +1,64 @@
+diff -ur nullmailer-1.00/doc/nullmailer-queue.8 nullmailer-1.00-FHS/doc/nullmailer-queue.8
+--- nullmailer-1.00/doc/nullmailer-queue.8	2002-12-23 18:29:20.000000000 +0100
++++ nullmailer-1.00-FHS/doc/nullmailer-queue.8	2006-01-18 13:00:34.000000000 +0100
+@@ -30,13 +30,13 @@
+ being bounced by your relay host.
+ .SH OTHER FILES
+ .TP
+-.B /var/nullmailer/queue
++.B /var/spool/nullmailer/queue
+ The directory into which the completed messages are moved.
+ .TP
+-.B /var/nullmailer/tmp
++.B /var/spool/nullmailer/tmp
+ The directory in which messages are formed temporarily.
+ .TP
+-.B /var/nullmailer/trigger
++.B /var/spool/nullmailer/trigger
+ A pipe used to trigger
+ .BR nullmailer-send
+ to immediately start sending the message from the queue.
+diff -ur nullmailer-1.00/doc/nullmailer-send.8 nullmailer-1.00-FHS/doc/nullmailer-send.8
+--- nullmailer-1.00/doc/nullmailer-send.8	2003-01-03 21:50:07.000000000 +0100
++++ nullmailer-1.00-FHS/doc/nullmailer-send.8	2006-01-18 13:06:54.000000000 +0100
+@@ -66,16 +66,16 @@
+ Blank lines and lines starting with a pound are ignored.
+ .SH FILES
+ .TP
+-.B /var/nullmailer/queue
++.B /var/spool/nullmailer/queue
+ The message queue.
+ .TP
+-.B /var/nullmailer/trigger
++.B /var/spool/nullmailer/trigger
+ A trigger file to cause immediate delivery.
+ .TP
+-.B /usr/local/etc/nullmailer
++.B /etc/nullmailer
+ The configuration directory.
+ .TP
+-.B /usr/local/libexec/nullmailer
++.B /usr/lib/nullmailer
+ The protocol program directory.
+ .SH SEE ALSO
+ nullmailer-queue(8),
+diff -ur nullmailer-1.00/lib/Makefile.am nullmailer-1.00-FHS/lib/Makefile.am
+--- nullmailer-1.00/lib/Makefile.am	2005-02-28 18:53:51.000000000 +0100
++++ nullmailer-1.00-FHS/lib/Makefile.am	2006-01-18 13:06:40.000000000 +0100
+@@ -28,7 +28,7 @@
+ defines.cc: Makefile.am make_defines.sh
+ 	@echo Creating defines.cc
+ 	@sh make_defines.sh \
+-		@localstatedir@/nullmailer \
++		@localstatedir@/spool/nullmailer \
+ 		@sysconfdir@/nullmailer \
+ 		@libexecdir@/nullmailer \
+ 		@bindir@ \
+--- nullmailer-1.00-FHS/Makefile.am~	2002-12-16 21:24:28.000000000 +0100
++++ nullmailer-1.00-FHS/Makefile.am	2006-01-18 13:15:30.000000000 +0100
+@@ -1,4 +1,4 @@
+-localstatedir = @localstatedir@/nullmailer
++localstatedir = @localstatedir@/spool/nullmailer
+ sysconfdir = @sysconfdir@/nullmailer
+ 
+ EXTRA_DIST = BUGS HOWTO INSTALL TODO YEAR2000 scripts/*
