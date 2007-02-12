@@ -1,6 +1,6 @@
 # TODO: FHS compliance (/var/nullmailer -> /var/lib/nullmailer)
 Summary:	Simple relay-only mail transport agent
-Summary(pl):	Prosty, wy³±cznie przekazuj±cy MTA
+Summary(pl.UTF-8):   Prosty, wyÅ‚Ä…cznie przekazujÄ…cy MTA
 Name:		nullmailer
 Version:	1.02
 Release:	2
@@ -44,10 +44,10 @@ Nullmailer is a mail transport agent designed to only relay all its
 messages through a fixed set of "upstream" hosts. It is also designed
 to be secure.
 
-%description -l pl
+%description -l pl.UTF-8
 Nullmailer to MTA przeznaczony tylko do przekazywania wszystkich
-wiadomo¶ci do ustalonej listy "nadrzêdnych" serwerów. Zosta³
-zaprojektowany tak¿e z my¶l± o bezpieczeñstwie.
+wiadomoÅ›ci do ustalonej listy "nadrzÄ™dnych" serwerÃ³w. ZostaÅ‚
+zaprojektowany takÅ¼e z myÅ›lÄ… o bezpieczeÅ„stwie.
 
 %prep
 %setup -q
