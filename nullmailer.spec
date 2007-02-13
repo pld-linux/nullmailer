@@ -1,6 +1,6 @@
 # TODO: FHS compliance (/var/nullmailer -> /var/lib/nullmailer)
 Summary:	Simple relay-only mail transport agent
-Summary(pl.UTF-8):   Prosty, wyłącznie przekazujący MTA
+Summary(pl.UTF-8):	Prosty, wyłącznie przekazujący MTA
 Name:		nullmailer
 Version:	1.02
 Release:	2
