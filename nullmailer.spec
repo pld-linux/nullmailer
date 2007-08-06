@@ -3,7 +3,7 @@ Summary:	Simple relay-only mail transport agent
 Summary(pl.UTF-8):	Prosty, wyłącznie przekazujący MTA
 Name:		nullmailer
 Version:	1.03
-Release:	1
+Release:	2
 License:	GPL
 Group:		Networking/Daemons
 Source0:	http://untroubled.org/nullmailer/%{name}-%{version}.tar.gz
@@ -24,19 +24,7 @@ Requires(postun):	/usr/sbin/userdel
 Provides:	group(nullmail)
 Provides:	smtpdaemon
 Provides:	user(nullmail)
-Obsoletes:	courier
-Obsoletes:	exim
-Obsoletes:	masqmail
-Obsoletes:	omta
-Obsoletes:	postfix
-Obsoletes:	qmail
-Obsoletes:	sendmail
-Obsoletes:	sendmail-cf
-Obsoletes:	sendmail-doc
-Obsoletes:	smail
 Obsoletes:	smtpdaemon
-Obsoletes:	ssmtp
-Obsoletes:	zmailer
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
