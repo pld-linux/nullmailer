@@ -3,7 +3,7 @@ Summary:	Simple relay-only mail transport agent
 Summary(pl.UTF-8):	Prosty, wyłącznie przekazujący MTA
 Name:		nullmailer
 Version:	1.05
-Release:	1
+Release:	2
 License:	GPL
 Group:		Networking/Daemons
 Source0:	http://untroubled.org/nullmailer/%{name}-%{version}.tar.gz
